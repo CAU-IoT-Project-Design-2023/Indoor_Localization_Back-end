@@ -6,6 +6,10 @@ app = Flask(__name__)
 def home():
     return "CAU-IoT-Project-Design-2023"
 
+@app.route("/is-connected", methods=["GET"])
+def isConnected():
+    return True
+
 # 클라이언트로부터 센서 데이터 값 받기
 # 해당 기능은 Test 용도
 @app.route("/get-sensor-data", methods=["GET"])
