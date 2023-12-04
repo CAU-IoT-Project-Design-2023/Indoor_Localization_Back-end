@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -21,6 +22,15 @@ def getSensorData():
         
         return "x: {0}, y: {1}, z: {2}".format(x, y, z)
         
+@app.route("/indoor-localization", methods=["POST"])
+def localization():
+    if request.method == "POST":
+        file = request.files['file']
+        file.save("./" + secure_filename(file.filename))
+        
+        # TODO
+        return jsonify({"result": "Section 1"})
+
 if __name__ == "__main__":
     with open("information.txt", encoding="UTF-8") as f:
         lines = f.readlines()
