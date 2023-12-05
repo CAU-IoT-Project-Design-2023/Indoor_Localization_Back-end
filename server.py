@@ -22,10 +22,7 @@ def isConnected():
 def saveSensorData():
     if request.method == "POST":
         file = request.files["file"]
-        filename = secure_filename(file.name)
-        
-        if os.path.isfile(os.getcwd() + "/" + filename):
-            os.remove(os.getcwd() + "/sensor_data.xls")
+        filename = secure_filename(file.filename)
         file.save("./" + filename)
         return "OK"
 
