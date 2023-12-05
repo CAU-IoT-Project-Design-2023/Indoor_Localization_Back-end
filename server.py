@@ -33,15 +33,30 @@ def localization():
         file.save("./" + filename)
         
         eng.addpath(os.getcwd())
-        eng.localization(nargout=0)
+        eng.addpath(os.getcwd())
+        result = eng.localization()[0]
+        resultX = result[0]
+        resultY = result[1]
+        resultZ = result[2]
         
-        return jsonify({"result": "Section 1"})
+        return jsonify({
+            "result": "Section ?",
+            "resultX": resultX,
+            "resultY": resultY,
+            "resultZ": resultZ
+            })
 
 # TODO: Test 용도로 삭제 예정
 def test():
     eng.addpath(os.getcwd())
-    eng.localization(nargout=0)
-
+    result = eng.localization()[0]
+    resultX = result[0]
+    resultY = result[1]
+    resultZ = result[2]
+    print(resultX)
+    print(resultY)
+    print(resultZ)
+    
 if __name__ == "__main__":
     with open("information.txt", encoding="UTF-8") as f:
         lines = f.readlines()
