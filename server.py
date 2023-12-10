@@ -17,7 +17,7 @@ def isConnected():
     return "connected"
 
 @app.route("/save-localization-data", methods=["POST"])
-def saveLocalizatinoData():
+def saveLocalizationData():
     if request.method == "POST":
         data = request.get_json()
         x = data["x"]
@@ -40,7 +40,7 @@ def rssiMeasure():
         knnResult = eng.doKNNPrediction()[0]
         return jsonify({
             "result": knnResult
-            })
+        })
 
 
 # 클라이언트로부터 센서 데이터 값 받기
@@ -69,25 +69,6 @@ def localization():
             "resultY": resultY,
             "resultZ": resultZ
             })
-    
-    
-@app.route("/save-localization-data", methods=["POST"])
-def saveLocalizationData():
-    if request.method == "POST":
-        data = request.get_json()
-
-
-@app.route("/save-localization-data", methods=["POST"])
-def saveLocalizatinoData():
-    if request.method == "POST":
-        data = request.get_json()
-        x = data["x"]
-        y = data["y"]
-        z = data["z"]
-        section = data["section"]
-        with open("data.txt", "a+", encoding="UTF-8") as f:
-            f.write("%f,%f,%f,%d" % (x, y, z, section))
-        return "OK"
     
 
 @app.route("/save-rssi-data", methods=["GET"])
