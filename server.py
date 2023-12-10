@@ -16,6 +16,32 @@ def home():
 def isConnected():
     return "connected"
 
+@app.route("/save-localization-data", methods=["POST"])
+def saveLocalizatinoData():
+    if request.method == "POST":
+        data = request.get_json()
+        x = data["x"]
+        y = data["y"]
+        z = data["z"]
+        section = data["section"]
+        with open("data.txt", "a+", encoding="UTF-8") as f:
+            f.write("{},{},{},{}" % (x, y, z, section))
+        return "OK"
+
+
+@app.route("/rssi-measure", methods = ["GET"])
+def rssiMeasure():
+    if request.method == "GET":
+        eng.addpath(os.getcwd())
+        result = eng.calculateKalman()[0]
+        ap1 = result[0]
+        ap2 = result[2]
+        ap3 = result[3]
+        knnResult = eng.doKNNPrediction()[0]
+        return jsonify({
+            "result": knnResult
+            })
+
 
 # 클라이언트로부터 센서 데이터 값 받기
 @app.route("/save-sensor-data", methods=["POST"])
@@ -94,10 +120,10 @@ def saveRssiAndSectionData():
 
     
 if __name__ == "__main__":
-    with open("information.txt", encoding="UTF-8") as f:
-        lines = f.readlines()
-    info = []
-    for line in lines:
-        info.append(line)
+    # with open("information.txt", encoding="UTF-8") as f:
+    #     lines = f.readlines()
+    # info = []
+    # for line in lines:
+    #     info.append(line)
 
-    app.run("0.0.0.0", port=info[0])
+    app.run("0.0.0.0", port=8080)
