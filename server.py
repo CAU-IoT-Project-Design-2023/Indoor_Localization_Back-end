@@ -75,6 +75,22 @@ def safeRssiData():
         r3 = request.args.get("r3")
        
         return "t1: {0}, r1: {1}, t2: {2}, r2: {3}, t3: {4}, r3: {5}".format(t1, r1, t2, r2, t3, r3)
+    
+
+@app.route("/save-rssi-section-data", methods=["POST"])
+def saveRssiAndSectionData():
+    if request.method == "POST":
+        data = request.get_json()
+        s1 = data["s1"]
+        r1 = data["r1"]
+        s2 = data["s2"]
+        r2 = data["r2"]
+        s3 = data["s3"]
+        r3 = data["r3"]
+        section = data["section"]
+        with open("rssiData.txt", "a+", encoding="UTF-8") as f:
+            f.write("{0},{1},{2},{3},{4},{5},{6}".format(s1, r1, s2, r2, s3, r3, section))
+        return "OK"
 
     
 if __name__ == "__main__":
