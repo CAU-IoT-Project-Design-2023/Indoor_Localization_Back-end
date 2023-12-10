@@ -65,7 +65,7 @@ def saveLocalizatinoData():
     
 
 @app.route("/save-rssi-data", methods=["GET"])
-def safeRssiData():
+def saveRssiData():
     if request.method == "GET":
         t1  = request.args.get("t1")
         r1 = request.args.get("r1")
