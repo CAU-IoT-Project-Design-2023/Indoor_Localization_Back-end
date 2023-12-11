@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 import matlab.engine
 import os
+import time
 
 app = Flask(__name__)
 eng = matlab.engine.start_matlab()
@@ -16,32 +17,6 @@ def home():
 def isConnected():
     return "connected"
 
-@app.route("/save-localization-data", methods=["POST"])
-def saveLocalizationData():
-    if request.method == "POST":
-        data = request.get_json()
-        x = data["x"]
-        y = data["y"]
-        z = data["z"]
-        section = data["section"]
-        with open("data.txt", "a+", encoding="UTF-8") as f:
-            f.write("{},{},{},{}" % (x, y, z, section))
-        return "OK"
-
-
-@app.route("/rssi-measure", methods = ["GET"])
-def rssiMeasure():
-    if request.method == "GET":
-        eng.addpath(os.getcwd())
-        result = eng.calculateKalman()[0]
-        ap1 = result[0]
-        ap2 = result[2]
-        ap3 = result[3]
-        knnResult = eng.doKNNPrediction()[0]
-        return jsonify({
-            "result": knnResult
-        })
-
 
 # 클라이언트로부터 센서 데이터 값 받기
 @app.route("/save-sensor-data", methods=["POST"])
@@ -53,51 +28,47 @@ def saveSensorData():
         return "OK"
 
 
-@app.route("/indoor-localization", methods=["GET"])
-def localization():
-    if request.method == "GET":
-        eng.addpath(os.getcwd())
-        eng.addpath(os.getcwd())
-        result = eng.localization()[0]
-        resultX = result[0]
-        resultY = result[1]
-        resultZ = result[2]
-        
-        return jsonify({
-            "result": "Section ?",
-            "resultX": resultX,
-            "resultY": resultY,
-            "resultZ": resultZ
-            })
-    
-
-@app.route("/save-rssi-data", methods=["GET"])
-def saveRssiData():
-    if request.method == "GET":
-        t1  = request.args.get("t1")
-        r1 = request.args.get("r1")
-        t2  = request.args.get("t2")
-        r2 = request.args.get("r2")
-        t3  = request.args.get("t3")
-        r3 = request.args.get("r3")
-       
-        return "t1: {0}, r1: {1}, t2: {2}, r2: {3}, t3: {4}, r3: {5}".format(t1, r1, t2, r2, t3, r3)
-    
-
-@app.route("/save-rssi-section-data", methods=["POST"])
-def saveRssiAndSectionData():
+@app.route("/save-localization-data", methods=["POST"])
+def saveLocalizationData():
     if request.method == "POST":
         data = request.get_json()
-        s1 = data["s1"]
-        r1 = data["r1"]
-        s2 = data["s2"]
-        r2 = data["r2"]
-        s3 = data["s3"]
-        r3 = data["r3"]
+        x = data["x"]
+        y = data["y"]
+        z = data["z"]
         section = data["section"]
-        with open("rssiData.txt", "a+", encoding="UTF-8") as f:
-            f.write("{0},{1},{2},{3},{4},{5},{6}".format(s1, r1, s2, r2, s3, r3, section))
+        with open("data.txt", "a+", encoding="UTF-8") as f:
+            f.write("%f,%f,%f,%d" % (x, y, z, section))
         return "OK"
+
+
+@app.route("/rssi-measure", methods = ["GET"])
+def rssiMeasure():
+    if request.method == "GET":
+        eng.addpath(os.getcwd())
+        result = eng.calculateKalman()[0]
+        time.sleep(1.5)
+        ap1 = result[0]
+        ap2 = result[1]
+        ap3 = result[2]
+        knnResult = eng.doKNNPrediction(ap1, ap2, ap3)[0]
+        time.sleep(1.5)
+        return jsonify({
+            "result": knnResult
+        })
+
+
+
+#@app.route("/indoor-localization", methods=["GET"])
+#def localization():
+#    if request.method == "GET":
+#        eng.addpath(os.getcwd())
+#        ap1 = request.args.get("ap1")
+#        ap2 = request.args.get("ap2")
+#        ap3 = request.args.get("ap3")
+#        knnResult = eng.doKNNPrediction(ap1, ap2, ap3)[0]
+#        return jsonify({
+#            "result": knnResult
+#        })
 
     
 if __name__ == "__main__":
