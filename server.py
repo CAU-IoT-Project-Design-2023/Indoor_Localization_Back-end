@@ -35,9 +35,9 @@ def rssiMeasure():
         eng.addpath(os.getcwd())
         result = eng.calculateKalman()[0]
         ap1 = result[0]
-        ap2 = result[2]
-        ap3 = result[3]
-        knnResult = eng.doKNNPrediction()[0]
+        ap2 = result[1]
+        ap3 = result[2]
+        knnResult = eng.doKNNPrediction(ap1,ap2,ap3)[0]
         return jsonify({
             "result": knnResult
             })
