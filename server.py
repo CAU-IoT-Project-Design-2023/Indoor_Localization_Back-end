@@ -52,10 +52,7 @@ def rssiMeasure():
         ap3 = result[2]
         knnResult = eng.doKNNPrediction(ap1, ap2, ap3)[0]
         time.sleep(1.5)
-        return jsonify({
-            "result": knnResult
-        })
-
+        return knnResult
 
 
 #@app.route("/indoor-localization", methods=["GET"])
@@ -72,10 +69,4 @@ def rssiMeasure():
 
 
 if __name__ == "__main__":
-    with open("information.txt", encoding="UTF-8") as f:
-        lines = f.readlines()
-    info = []
-    for line in lines:
-        info.append(line)
-
-    app.run("0.0.0.0", port=info[0])
+    app.run("0.0.0.0", port=8080)
