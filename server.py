@@ -70,12 +70,12 @@ def rssiMeasure():
 #            "result": knnResult
 #        })
 
-    
-if __name__ == "__main__":
-    # with open("information.txt", encoding="UTF-8") as f:
-    #     lines = f.readlines()
-    # info = []
-    # for line in lines:
-    #     info.append(line)
 
-    app.run("0.0.0.0", port=8080)
+if __name__ == "__main__":
+    with open("information.txt", encoding="UTF-8") as f:
+        lines = f.readlines()
+    info = []
+    for line in lines:
+        info.append(line)
+
+    app.run("0.0.0.0", port=info[0])
