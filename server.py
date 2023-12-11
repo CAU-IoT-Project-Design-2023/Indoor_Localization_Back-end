@@ -17,7 +17,7 @@ def isConnected():
     return "connected"
 
 @app.route("/save-localization-data", methods=["POST"])
-def saveLocalizatinoData():
+def saveLocalizationData():
     if request.method == "POST":
         data = request.get_json()
         x = data["x"]
@@ -40,7 +40,7 @@ def rssiMeasure():
         knnResult = eng.doKNNPrediction(ap1,ap2,ap3)[0]
         return jsonify({
             "result": knnResult
-            })
+        })
 
 
 # 클라이언트로부터 센서 데이터 값 받기
@@ -69,19 +69,36 @@ def localization():
             "resultY": resultY,
             "resultZ": resultZ
             })
-
-
-# TODO: Test 용도로 삭제 예정
-def test():
-    eng.addpath(os.getcwd())
-    result = eng.localization()[0]
-    resultX = result[0]
-    resultY = result[1]
-    resultZ = result[2]
-    print(resultX)
-    print(resultY)
-    print(resultZ)
     
+
+@app.route("/save-rssi-data", methods=["GET"])
+def saveRssiData():
+    if request.method == "GET":
+        t1  = request.args.get("t1")
+        r1 = request.args.get("r1")
+        t2  = request.args.get("t2")
+        r2 = request.args.get("r2")
+        t3  = request.args.get("t3")
+        r3 = request.args.get("r3")
+       
+        return "t1: {0}, r1: {1}, t2: {2}, r2: {3}, t3: {4}, r3: {5}".format(t1, r1, t2, r2, t3, r3)
+    
+
+@app.route("/save-rssi-section-data", methods=["POST"])
+def saveRssiAndSectionData():
+    if request.method == "POST":
+        data = request.get_json()
+        s1 = data["s1"]
+        r1 = data["r1"]
+        s2 = data["s2"]
+        r2 = data["r2"]
+        s3 = data["s3"]
+        r3 = data["r3"]
+        section = data["section"]
+        with open("rssiData.txt", "a+", encoding="UTF-8") as f:
+            f.write("{0},{1},{2},{3},{4},{5},{6}".format(s1, r1, s2, r2, s3, r3, section))
+        return "OK"
+
     
 if __name__ == "__main__":
     # with open("information.txt", encoding="UTF-8") as f:
