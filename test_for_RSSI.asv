@@ -1,15 +1,14 @@
-function result = calculateKalman()
-% 칼만 필터 파라미터 설정
 A = 1; % 상태 전이 행렬
 H = 1; % 측정 행렬
-Q = 0.1; % 프로세스 노이즈 공분산
-R = 3; % 측정 노이즈 공분산
+Q = 1; % 프로세스 노이즈 공분산   
+R = 15; % 측정 노이즈 공분산
 x_hat = 0; % 초기 상태 추정값
-P = 3; % 초기 추정 오차 공분산
+P = 13; % 초기 추정 오차 공분산
 
 %% 
-filename = '10.xls';
+filename = '8/8';
 data = xlsread(filename, 'rssi');
+%
 result = []
 %% 
 for i = 2:4
@@ -30,7 +29,16 @@ for i = 2:4
     end
     result = [result,median(measured_rssi)]
     % 결과 시각화
+    % 결과 시각화
+%    figure;
+%    plot(measured_rssi, 'b+', 'DisplayName', 'Measured RSSI');
+%    hold on;
+%    plot(filtered_rssi, 'r', 'LineWidth', 2, 'DisplayName', 'Filtered RSSI');
+%    legend('Location', 'best');
+%    xlabel('Time');
+%    ylabel('RSSI');
+%    title('Kalman Filter for RSSI Data');
+%    grid on;
 end
-
+%please = doKNNPrediction(result(1),result(2),result(3))
 disp(result)
-

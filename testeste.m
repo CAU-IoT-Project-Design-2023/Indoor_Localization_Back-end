@@ -1,0 +1,1 @@
+result = doKNNPrediction(-58,-56,-60)

@@ -45,14 +45,11 @@ def saveLocalizationData():
 def rssiMeasure():
     if request.method == "GET":
         eng.addpath(os.getcwd())
-        result = eng.calculateKalman()[0]
+        knnResult = eng.doKNNPrediction(10, 10, 10)
+        print(knnResult)
         time.sleep(1.5)
-        ap1 = result[0]
-        ap2 = result[1]
-        ap3 = result[2]
-        knnResult = eng.doKNNPrediction(ap1, ap2, ap3)[0]
-        time.sleep(1.5)
-        return knnResult
+        return str(knnResult)
+
 
 
 #@app.route("/indoor-localization", methods=["GET"])
