@@ -28,19 +28,7 @@ def saveSensorData():
         return "OK"
 
 
-@app.route("/save-localization-data", methods=["POST"])
-def saveLocalizationData():
-    if request.method == "POST":
-        data = request.get_json()
-        x = data["x"]
-        y = data["y"]
-        z = data["z"]
-        section = data["section"]
-        with open("data.txt", "a+", encoding="UTF-8") as f:
-            f.write("%f,%f,%f,%d" % (x, y, z, section))
-        return "OK"
-
-
+# RSSI-based Localization
 @app.route("/rssi-measure", methods = ["GET"])
 def rssiMeasure():
     if request.method == "GET":
@@ -49,20 +37,6 @@ def rssiMeasure():
         print(knnResult)
         time.sleep(1.5)
         return str(knnResult)
-
-
-
-#@app.route("/indoor-localization", methods=["GET"])
-#def localization():
-#    if request.method == "GET":
-#        eng.addpath(os.getcwd())
-#        ap1 = request.args.get("ap1")
-#        ap2 = request.args.get("ap2")
-#        ap3 = request.args.get("ap3")
-#        knnResult = eng.doKNNPrediction(ap1, ap2, ap3)[0]
-#        return jsonify({
-#            "result": knnResult
-#        })
 
 
 if __name__ == "__main__":
