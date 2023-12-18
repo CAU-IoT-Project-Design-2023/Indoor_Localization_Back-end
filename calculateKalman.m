@@ -8,13 +8,13 @@ x_hat = 0; % 초기 상태 추정값
 P = 3; % 초기 추정 오차 공분산
 
 %% 
-filename = '10.xls';
+filename = 'rssi_data.xls';
 data = xlsread(filename, 'rssi');
-result = []
+result = [];
 %% 
 for i = 2:4
-    measured_rssi = data(:,i)
-    x_hat = measured_rssi(1)
+    measured_rssi = data(:,i);
+    x_hat = measured_rssi(1);
     filtered_rssi = zeros(size(measured_rssi));
     for k = 1:length(measured_rssi)
         % 예측 단계
@@ -28,7 +28,7 @@ for i = 2:4
     
         filtered_rssi(k) = x_hat;
     end
-    result = [result,median(measured_rssi)]
+    result = [result,median(measured_rssi)];
     % 결과 시각화
 end
 
